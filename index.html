@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>User Information</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            /* Additional CSS styles */
+            .card {
+                max-width: 40rem;
+                margin: 2rem auto;
+                background-color: #fff;
+                border-radius: 0.5rem;
+                box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            .card-header {
+                background-color: #3461dc;
+                color: #fff;
+                padding: 1rem;
+                text-align: center;
+                font-size: 1.25rem;
+                font-weight: bold;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .label {
+                font-size: 0.875rem;
+                font-weight: bold;
+                text-transform: uppercase;
+                color: #718096;
+                margin-bottom: 0.25rem;
+            }
+
+            .value {
+                font-size: 1rem;
+                color: #4a5568;
+                margin-bottom: 1rem;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-100">
+        <div class="card">
+            <div class="card-header">User Information</div>
+            <div class="card-body">
+                <div class="label">Platform:</div>
+                <div class="value" id="platform"></div>
+                <div class="label">User Agent:</div>
+                <div class="value" id="user-agent"></div>
+                <div class="label">IP Address:</div>
+                <div class="value" id="ip-address"></div>
+                <div class="label">Preferred Language:</div>
+                <div class="value" id="preferred-language"></div>
+                <div class="label">Referrer:</div>
+                <div class="value" id="referrer"></div>
+                <div class="label">Server Hostname:</div>
+                <div class="value" id="server-hostname"></div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        // Get the user information
+        // Get the user agent and IP address
+        const userAgent = navigator.userAgent;
+        const ipAddress = location.hostname;
+
+        // Regular expressions to match various operating systems
+        const osRegexes = [
+            { name: 'Windows 10', regex: /Windows NT\s?10\.0/ },
+            { name: 'Windows 8.1', regex: /Windows NT\s?6\.3/ },
+            { name: 'Windows 8', regex: /Windows NT\s?6\.2/ },
+            { name: 'Windows 7', regex: /Windows NT\s?6\.1/ },
+            { name: 'Windows Vista', regex: /Windows NT\s?6\.0/ },
+            { name: 'Windows XP', regex: /Windows NT\s?5\.1|Windows XP/ },
+            { name: 'Mac OS X', regex: /Mac OS X\s?([\d_\.]+)/ },
+            { name: 'Ubuntu', regex: /Ubuntu\/([\d\.]+)/ },
+            { name: 'Debian', regex: /Debian\/([\d\.]+)/ },
+            { name: 'Fedora', regex: /Fedora\/([\d\.]+)/ },
+            {
+                name: 'Red Hat Enterprise Linux',
+                regex: /Red Hat Enterprise Linux.*release\s([\d\.]+)/,
+            },
+            { name: 'CentOS', regex: /CentOS\/([\d\.]+)/ },
+            { name: 'SUSE', regex: /SUSE\/([\d\.]+)/ },
+            { name: 'Mint', regex: /Linux Mint\s?([\d\.]+)/ },
+            { name: 'Android', regex: /Android\s([\d\.]+)/ },
+            { name: 'iOS', regex: /(iPhone|iPad|iPod).*OS\s([\d_\.]+)/ },
+        ];
+
+        // Find the operating system in the user agent string
+        let os = '';
+        osRegexes.forEach((osRegex) => {
+            const match = osRegex.regex.exec(userAgent);
+            if (match) {
+                os = osRegex.name;
+            }
+        });
+
+        // Get the platform information from the user agent
+        let platform = '';
+        const regex = /\(([^)]+)\)/;
+        const match = regex.exec(userAgent);
+        if (match) {
+            platform = match[1];
+        }
+
+        // Get the preferred language and referrer from the headers
+        const language = navigator.language || '';
+        const referrer = document.referrer || '';
+        const serverHostname = location.host;
+
+        // Set the user information in the HTML elements
+        document.getElementById('platform').textContent = os;
+        document.getElementById('user-agent').textContent = userAgent;
+        document.getElementById('ip-address').textContent = ipAddress;
+        document.getElementById('preferred-language').textContent = language;
+        document.getElementById('referrer').textContent = referrer;
+        document.getElementById('server-hostname').textContent = serverHostname;
+    </script>
+</html>
